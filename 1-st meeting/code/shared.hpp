@@ -1,28 +1,28 @@
 #pragma once
 
-struct Shared {
-    Shared() = default;
-    Shared(Shared&&) noexcept = default;
-    Shared& operator=(Shared&& other) noexcept = default;
+struct SharedPtr {
+    SharedPtr() = default;
+    SharedPtr(SharedPtr&&) noexcept = default;
+    SharedPtr& operator=(SharedPtr&& other) noexcept = default;
 
-    Shared(int* ptr) : ptr_(ptr), amount(new int(1)) {}
+    SharedPtr(int* ptr) : ptr_(ptr), amount(new int(1)) {}
 
-    Shared(const Shared& other) : ptr_(other.ptr_), amount(other.amount) {
+    SharedPtr(const SharedPtr& other) : ptr_(other.ptr_), amount(other.amount) {
         *amount += 1;
     }
 
-    Shared& operator=(const Shared& other) {
+    SharedPtr& operator=(const SharedPtr& other) {
         if (this == &other)
             return *this;
         *amount -= 1;
-        this->~Shared();
+        this->~SharedPtr();
         ptr_ = other.ptr_;
         amount = other.amount;
         *amount += 1;
         return *this;
     }
 
-    ~Shared() {
+    ~SharedPtr() {
         if (!amount) {
             delete ptr_;
             delete amount;

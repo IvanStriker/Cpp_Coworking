@@ -37,6 +37,12 @@ struct IntUnique {
         if (ptr)
             ptr_ = ptr;
     }
+    
+    int* release() {
+        int* tempPtr = ptr_;
+        ptr_ = nullptr;
+        return tempPtr;
+    }
 
     int& operator*() {
         return *ptr_;
